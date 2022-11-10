@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            background-color: #010013;
+        }
+        .container{
+            width: 360px;
+            max-width: 1050px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .item{
+            width: 100%;
+
+            margin: 0 auto;
+        }
+        video{
+            width: 100%;
+            height: 100%;
+            /* border: 5px solid gold; */
+        }
+        .controls{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 5px auto;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+            <video id="video" src="https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-b8zhor6zx0j6-10d2fee88d804d1eb0b680833e4e50f0.mp4" controls></video>
+            <div class="controls">
+                <input type="range"  max="1"step="0.1" value="1" id="range" onchange="callme()" />
+                <input type="number" id="selector" />
+                <input type="button" onclick="selector()" value="Get The Class"/>
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        var video = document.getElementById('video')
+        var obj =['https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-b8zhor6zx0j6-10d2fee88d804d1eb0b680833e4e50f0.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-nei2udynk6qf-46845ceb260a4fb7b06c40756110ac95.mp4',						
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ss8lkxmod5nm-af581feaaecf4df293af5d238edd331b.mp4',						
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-75q4ktchv79q-a99288952ea84ce4bcf4e56dc',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-852j2xzxxey4-ae11b6487d4d4e9a99bf9e6721c3cea0.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kkn55iqvy78r-75af26ca056243bf94a613aa82c9ae14.mp4',						
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5syyfe1qwbue-590e73f251404a2ea96fb2de072c0d6f.mp4',						
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-z6b0x7lu40g5-7102e149a6d440459d9e5548e63fc872.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fn0tgiir1uci-e0652ecae27b4d719c5775bfe515686f.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ztt2v6k3ccdz-79d3fef8b2a34ceb9760e43207773edb.mp4',						
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gkr0g22skypw-70c12b7a4fa74e888761d08374323cde.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5n731ukpqqb6-732f04db565a40d7a9efa8234ea9f921.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-syjb7crwfy1z-07202d90028246eda04a21cddbfccb57.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-g1nry1oajv8l-ace8cac6f75a442bac1f8d78bfcf591f.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-4qmltfyji5xx-32d48c31b7de4bd99c28c8729f630a92.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-7fkoyfi9ej5q-c3a64c08a007479d90c0d6ed4099206d.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-lifq5zas3ofc-67b181afe2924fe8b1d60ae9c131dd55.mp4',									
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-l308m2bt992i-27a3d961cd4f44278897782846664f4b.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9az1jykeom7i-f797b929f5d04d328af84c154a851053.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gf40obfpz1h9-71542f2e032c43e396cd7eb49ed8adf1.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-pvi0atfmvg15-15ee0192f8994edf9e49b74e2448f8f6.mp4',									
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-s5gqoo3r5ggy-17f31a7aa6774d4a8c034b06fe75c2cf.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9w86u7zngkub-9383de173ebf41dd9f7df7e7dcd53df4.mp4',										
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-wbj2txatrhqe-95266d0bf1e643acbaddc43b32dfbd74.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-1dsyfrdyk8kj-b07b64b6239848e69ce3d17ff4444d4c.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ced4utl7p6dq-c80befcb880e4876ae873e45b41c9ce0.mp4',														
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-xnghg8v4eb4b-c801eec594474c6b85795c6f373eedc4.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-r23m0df1vyg5-009c8743233849079f55e024c665294e.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-akivd3bap3k9-2aff0d3d99914c108271ba1771c6170b.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0q96ts7xt0ba-f49d1782d5ea4c308af1d1dbe53e8bd4.mp4',							
+'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-n1qfzmxrf7d4-0d496242334f435c923e21b9cf951881.mp4']	
+        function callme(){
+        
+        console.log(document.getElementById('range').value)
+        video.volume= document.getElementById('range').value;
+        }
+        function selector(){
+            var x = document.getElementById('selector').value
+            console.log(obj.length);
+            if(x>obj.length)
+            {
+                document.getElementById('selector').value='';
+            }
+            video.src=obj[x]
+        }
+    </script>
+    
+</body>
+</html>
+
+
+
+						
+						
