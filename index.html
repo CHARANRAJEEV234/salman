@@ -12,14 +12,17 @@
             background-color: #010013;
         }
         .container{
-            width: 360px;
+            /* width: 100%; */
             max-width: 1050px;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0 auto;
         }
         .item{
+           
             width: 100%;
+            /* max-width: 1050px; */
 
             margin: 0 auto;
         }
@@ -36,14 +39,26 @@
             flex-direction: column;
             margin: 5px auto;
         }
+        h4{
+            color: aliceblue;
+        }
+        input{
+            background-color: wheat;
+            color: black;
+        }
+        #timer{
+            color: red;
+        }
     </style>
 
 </head>
 <body>
     <div class="container">
         <div class="item">
+            <h4>Class No.<p id="No"></p></h4>
             <video id="video" src="https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-b8zhor6zx0j6-10d2fee88d804d1eb0b680833e4e50f0.mp4" controls></video>
             <div class="controls">
+                <div id="timer"></div>
                 <input type="range"  max="1"step="0.1" value="1" id="range" onchange="callme()" />
                 <input type="number" id="selector" />
                 <input type="button" onclick="selector()" value="Get The Class"/>
@@ -52,38 +67,452 @@
         </div>
     </div>
     <script>
+        var timer = 0;
         var video = document.getElementById('video')
-        var obj =['https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-b8zhor6zx0j6-10d2fee88d804d1eb0b680833e4e50f0.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-nei2udynk6qf-46845ceb260a4fb7b06c40756110ac95.mp4',						
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ss8lkxmod5nm-af581feaaecf4df293af5d238edd331b.mp4',						
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-75q4ktchv79q-a99288952ea84ce4bcf4e56dc',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-852j2xzxxey4-ae11b6487d4d4e9a99bf9e6721c3cea0.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kkn55iqvy78r-75af26ca056243bf94a613aa82c9ae14.mp4',						
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5syyfe1qwbue-590e73f251404a2ea96fb2de072c0d6f.mp4',						
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-z6b0x7lu40g5-7102e149a6d440459d9e5548e63fc872.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fn0tgiir1uci-e0652ecae27b4d719c5775bfe515686f.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ztt2v6k3ccdz-79d3fef8b2a34ceb9760e43207773edb.mp4',						
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gkr0g22skypw-70c12b7a4fa74e888761d08374323cde.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5n731ukpqqb6-732f04db565a40d7a9efa8234ea9f921.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-syjb7crwfy1z-07202d90028246eda04a21cddbfccb57.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-g1nry1oajv8l-ace8cac6f75a442bac1f8d78bfcf591f.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-4qmltfyji5xx-32d48c31b7de4bd99c28c8729f630a92.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-7fkoyfi9ej5q-c3a64c08a007479d90c0d6ed4099206d.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-lifq5zas3ofc-67b181afe2924fe8b1d60ae9c131dd55.mp4',									
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-l308m2bt992i-27a3d961cd4f44278897782846664f4b.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9az1jykeom7i-f797b929f5d04d328af84c154a851053.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gf40obfpz1h9-71542f2e032c43e396cd7eb49ed8adf1.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-pvi0atfmvg15-15ee0192f8994edf9e49b74e2448f8f6.mp4',									
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-s5gqoo3r5ggy-17f31a7aa6774d4a8c034b06fe75c2cf.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9w86u7zngkub-9383de173ebf41dd9f7df7e7dcd53df4.mp4',										
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-wbj2txatrhqe-95266d0bf1e643acbaddc43b32dfbd74.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-1dsyfrdyk8kj-b07b64b6239848e69ce3d17ff4444d4c.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ced4utl7p6dq-c80befcb880e4876ae873e45b41c9ce0.mp4',														
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-xnghg8v4eb4b-c801eec594474c6b85795c6f373eedc4.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-r23m0df1vyg5-009c8743233849079f55e024c665294e.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-akivd3bap3k9-2aff0d3d99914c108271ba1771c6170b.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0q96ts7xt0ba-f49d1782d5ea4c308af1d1dbe53e8bd4.mp4',							
-'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-n1qfzmxrf7d4-0d496242334f435c923e21b9cf951881.mp4']	
+        // Assign an ontimeupdate event to the <video> element, and execute a function if the current playback position has changed
+video.ontimeupdate = function() {myFunction()};
+
+function myFunction() {
+// Display the current position of the video in a <p> element with id="demo"
+    var seconds = video.currentTime;
+// multiply by 1000 because Date() requires miliseconds
+var date = new Date(seconds * 1000);
+var hh = date.getUTCHours();
+var mm = date.getUTCMinutes();
+var ss = date.getSeconds();
+// If you were building a timestamp instead of a duration, you would uncomment the following line to get 12-hour (not 24) time
+// if (hh > 12) {hh = hh % 12;}
+// These lines ensure you have two-digits
+if (hh < 10) {hh = "0"+hh;}
+if (mm < 10) {mm = "0"+mm;}
+if (ss < 10) {ss = "0"+ss;}
+// This formats your string to HH:MM:SS
+var t = hh+":"+mm+":"+ss;
+// document.write(t);
+    document.getElementById('timer').innerText=`${t}`
+}
+    //     video.onplay = evt =>{ this.currentTime = evt.target.currentTime
+    //         console.log(currentTime)
+
+    //     }
+    //     video.onplaying(setInterval((e)=>{this.currentTime = evt.target.currentTime
+    // console.log(currentTime)
+
+    //     },1000))
+// when resuming playback, fires quicker than ontimeupdate 
+// setInterval(video.onplaying = evt =>{ this.currentTime = evt.target.currentTime
+//     console.log(currentTime)
+// },1000)
+
+//         var obj =['https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-b8zhor6zx0j6-10d2fee88d804d1eb0b680833e4e50f0.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-nei2udynk6qf-46845ceb260a4fb7b06c40756110ac95.mp4',						
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ss8lkxmod5nm-af581feaaecf4df293af5d238edd331b.mp4',						
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-75q4ktchv79q-a99288952ea84ce4bcf4e56dc',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-852j2xzxxey4-ae11b6487d4d4e9a99bf9e6721c3cea0.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kkn55iqvy78r-75af26ca056243bf94a613aa82c9ae14.mp4',						
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5syyfe1qwbue-590e73f251404a2ea96fb2de072c0d6f.mp4',						
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-z6b0x7lu40g5-7102e149a6d440459d9e5548e63fc872.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fn0tgiir1uci-e0652ecae27b4d719c5775bfe515686f.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ztt2v6k3ccdz-79d3fef8b2a34ceb9760e43207773edb.mp4',						
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gkr0g22skypw-70c12b7a4fa74e888761d08374323cde.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5n731ukpqqb6-732f04db565a40d7a9efa8234ea9f921.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-syjb7crwfy1z-07202d90028246eda04a21cddbfccb57.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-g1nry1oajv8l-ace8cac6f75a442bac1f8d78bfcf591f.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-4qmltfyji5xx-32d48c31b7de4bd99c28c8729f630a92.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-7fkoyfi9ej5q-c3a64c08a007479d90c0d6ed4099206d.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-lifq5zas3ofc-67b181afe2924fe8b1d60ae9c131dd55.mp4',									
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-l308m2bt992i-27a3d961cd4f44278897782846664f4b.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9az1jykeom7i-f797b929f5d04d328af84c154a851053.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gf40obfpz1h9-71542f2e032c43e396cd7eb49ed8adf1.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-pvi0atfmvg15-15ee0192f8994edf9e49b74e2448f8f6.mp4',									
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-s5gqoo3r5ggy-17f31a7aa6774d4a8c034b06fe75c2cf.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9w86u7zngkub-9383de173ebf41dd9f7df7e7dcd53df4.mp4',										
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-wbj2txatrhqe-95266d0bf1e643acbaddc43b32dfbd74.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-1dsyfrdyk8kj-b07b64b6239848e69ce3d17ff4444d4c.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ced4utl7p6dq-c80befcb880e4876ae873e45b41c9ce0.mp4',														
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-xnghg8v4eb4b-c801eec594474c6b85795c6f373eedc4.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-r23m0df1vyg5-009c8743233849079f55e024c665294e.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-akivd3bap3k9-2aff0d3d99914c108271ba1771c6170b.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0q96ts7xt0ba-f49d1782d5ea4c308af1d1dbe53e8bd4.mp4',							
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-n1qfzmxrf7d4-0d496242334f435c923e21b9cf951881.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fpil0in922gd-ad49c39c14cd45229269ae7bdffdb048.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0nfzx37kr03l-8e364d40bc364256a6c26fa36eda76ba.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-yp91sjfq64id-e74c9047958e41368939095588c819be.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-3uy8ujh1htju-a3bbc55101a84431b46f2d0cb3cefd3a.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-x9741ukbw9w1-ac1db3487daa48fd95623e0b78301b9b.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-08oveyhd3vx8-80884d043c234538b5af9a215ec10b16.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-duq1lbwv216x-3df13003a92c4857bcbce2d83a935573.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-tt04uklh1jyq-5907858a706e4ccb817a8d2a4d5725a7.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-pcgul4j3y7ny-1ffe6804420744fd9e194f5c7f2e2460.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ugwkr96e50g8-90493138910c4e24a18306993b708c38.mp4',
+// 'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-dd7f9j4j4heh-1e11be27778f434db376a2a17d10e11b.mp4'
+// ]	
+const obj =[
+
+{title:'16 june 2022- fundamentals',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/f415dc196e2a48368a6da1bbc4149f7a.mp4',
+/// https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/f415dc196e2a48368a6da1bbc4149f7a.mp4
+/// https://d3dyfaf3iutro.cloudfront.net/video/course/video_session/f415dc196e2a48368a6da1bbc4149f7a.mp4
+
+},
+{title:'17 june 2022 -Meta Tags, Attributes, Entities, Href, Alt, HTML',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/dc399c7655c64cc09f2a1e7bb64d5a83.mp4',
+},
+{title:'20 june 2022 -Semantic HTML, Layout, Header, Nav, Section, Aside, Footer',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/7f28bdcebcfe4785b42aa940792f2aba.mp4',
+},
+{title:'21 june 2022 -media list',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/f032b0e052f7498eb52be253588c7d5e.mp4',
+},
+{title:'22 june 2022 - tables',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/ba280093d4d049b29a5ab08722427044.mp4',
+},
+{title:'23 june 2022 - Base Elements, Form attributes, Buttons',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/fbe45d6716224d21ba36f9e9b84f985c.mp4',
+},
+{title:'24 june 2022 -Select, Option tag, Input type checkbox, Input type text, Placeholder, Required',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/cb1e4188bb684e8bbf0faaf8d44ac1f1.mp4',
+},
+{title:'27 june 2022 - HTML Forms, Input types, Input attributes, Input type button',
+src:'https://d3dyfaf3iutro.cloudfront.net/video/course/video_session/bb1825e3cf4b4d588e3077d9177b34f3.mp4',
+},
+{title:'28 june 2022 - Form Elements',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/0d0cd04e8e034601b612f7c5e0bdf338.mp4',
+},
+{title:'29 june 2022 - basic selectors',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/78f0c5c0667542c3a201bdd4025b1d97.mp4',
+},
+{title:'30 june 2022 - Id selector, Class selector, Text Color',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/0bf467a871844afaa0c686717d10111a.mp4',
+},
+{title:'1 july 2022 - combinators',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-dshej05q138f-8179f6b338b744af9c2fcae1e2392038.mp4',
+},
+{title:'4 july 2022 - Box model',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-jzpwjueghda0-1fb2168c7adb46e59e0d3e2a926fa797.mp4',
+},
+{title:'5 july 2022 - CSS Colours, CSS Margin and Padding, Background Color',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-uprnaq68ynzq-d7b652c7c6374d3a96237cdeb7f30967.mp4',
+},
+{title:'6 july 2022- pre flexbox',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-hp5xqhq7x7rs-87644ac909b64ee8b0fda6b117798f7a.mp4',
+},
+{title:'7 july 2022 - CSS Backgrounds, Flexbox',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-krydswt3c90h-5acc710a8aa443209dcea268ba6cae44.mp4',
+},
+{title:'8 july 2022 - CSS Grid',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-he2iiwcg8wrq-e912e70c59bc442fb5df0df8c26bd5ce.mp4',
+},
+{title:'12 july 2022 - CSS text-effects, Media Queries, Responsive Images and Videos',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-hbkbbkz7tv1q-5e3ff6b1f6c04936b1c1ef0e6adbee49.mp4',
+},
+{title:'13 july 2022 - CSS Shadows, CSS Styling, Responsive CSS, CSS Gradients, Animations',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-s2xmhboi94fz-d8fd8ef9179a4e91bb80e355f3ab0061.mp4',
+},
+{title:'14 july 2022 - Pseudo elements, Selector-Attributes',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-nq3l9tfn5zjz-0f295898160e467e980094adea05ab0a.mp4',
+},
+{title:'15 july 2022 -CSS, Selectors, Pseudo classes, JS introduction, Execution Context and Call Stac',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-cyv66scfom8t-4c23dcbabcd74e9c846fbfb3c3205aad.mp4',
+},
+{title:'19 july 2022 -CSS, Selectors, Pseudo classes',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ytq40zjw2m7o-12fadaef53a3436587a4650f20c1fefa.mp4',
+},
+{title:'20 july 2022 - JS introduction, Execution Context and Call Stack, Javascript in browsers, JS Le',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-uwbhp5wrgxhq-d7a81517bf60417889ac4b6d6d4a573c.mp4',
+},
+{title:'21 july 2022 -JS introduction, Execution Context and Call Stack, Javascript in browsers, JS Le',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kwgxjbw1r3em-bb0075f6f94a40dabade6f155db1ad9b.mp4',
+},
+{title:'22 july 2022 -Javascript in browsers',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-sjcxqq5su9t6-428f3acb46344bffaca0ec21f29d2c95.mp4',
+},
+{title:'24 july 2022 - JS primitive types',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-1ujw1bknf4mr-59f1d126e13d4ad9a3b70a3c2c4190e3.mp4',
+},
+{title:'25 july 2022 - JS introduction, Execution Context and Call Stack, JS Lexical Environment,',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5pu19b7saaeb-997f48626d534105944ccd3ff9e706f8.mp4',
+},
+{title:'26 july 2022 -JS introduction, JS Lexical Environment, Var vs const vs let (Scope), ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-cj1o9u9imzi1-d724d9a001664bef938d48ea785c365b.mp4',
+},
+{title:'28 july 2022 - JS control flow',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gsmc00gcrm6h-3a4004cfe5a14964aeb6e13560b3e928.mp4',
+},
+{title:'29 july 2022 - JS String',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-7ezmfmxibvlg-a58b020507b740eda46ba8c87b8371d4.mp4',
+},
+{title:'31 july 2022 - 2JS Functions, First class functions, Anonymous functions, named functions',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-6ldak0dilk2o-5fedfaa1cde043c39d7237fb1d676aaa.mp4',
+},
+{title:'1 Aug 2022 -JS Functions, First class functions, Anonymous functions, named functions',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-l8ybqb4fcic9-cdddbbacb8b146e4a1217aa5ec84bddb.mp4',
+},
+{title:'2 Aug 2022 -JS Functions, First class functions, Anonymous functions, named functions',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fe2dwwot5dlv-0487e15f85d049e19c29def1eac5e9d0.mp4',
+},
+{title:'3 aug 2022 -Array loop methods (map, filter, reduce, forEach, some, every find)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-x0eq41j1gg7y-eb90fb86c1474d64bffaf51ac960f50d.mp4',
+},
+{title:'4 aug 2022 - JS array',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gti9fqn4ppiw-04d3df5fd48343fea3676a9155b04632.mp4',
+},
+{title:'5 aug 2022 -JS math',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kq84lbrwa40i-642520628d10430091ede1c76ac4595c.mp4',
+},
+{title:'6 aug 2022 - JS date',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-2jc91n2i1dbt-9b1d3368e23742809e5ce4a53335351e.mp4',
+},
+{title:'7 aug 2022 -DOM manipulation',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-shqf5fiqrtqh-d1b350b7a01f4722b22149b8469eed52.mp4',
+},
+{title:'8 aug 2022 -DOM Selectors, Creating and Adding html elements to page',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-a4gx3hhqzjkk-830e5587a40542aa90fa668616a212ba.mp4',
+},
+{title:'9 aug 2022 - DOM Events',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-uhqg9axy5221-0bc132242b7f44ad9c931d365379deb3.mp4',
+},
+{title:'10 aug 2022 -DOM Model',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ideb59gc8xrk-b3b178547c514c0485f6da0e17ed9aa7.mp4',
+},
+{title:'11 aug 2022 -Event bubbling, capturing and propagation',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-2ruf4nbtkp1a-4fd1948b2e8048778dfdd666de85033c.mp4',
+},
+{title:'16 aug 2022 - First class functions',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ilozuk1l8rng-04e9ce9b80a94c7aa3fccefb99a1fc40.mp4',
+},
+{title:'17 aug 2022 -setTimeout, JS BOM window',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ceb6m1x98rtp-92a70c6730374b8da48d576d022446e9.mp4',
+},
+{title:'18 aug 2022 -JS BOM history, JS BOM navigator',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-rgnkae9ze7hp-2df3435be5d743618157e90dacea27b8.mp4',
+},
+{title:'20 aug 2022 -JS BOM, JS Arrow functions',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-r7h7jqmp1jem-199fa0daeb454e46bb269b5b16f9a777.mp4',
+},
+{title:'21 aug 2022 -setInterval',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-rxvql7r7pp5v-38aa0e5ba3964fed90714c53c87c700d.mp4',
+},
+{title:'23 aug 2022 -ES6 Classes, JS Static Methods, ES6 Getters & Setters, ES6 Inheritance, ES6 Meth',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-z080l9ti0mnl-87eacfb868904a40b69a085b9efdee98.mp4',
+},
+{title:'24 aug 2022 - JS Spread operator',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-f5vufsrunzk7-a4c262dc89d24b999b3f2573ab8d9331.mp4',
+},
+{title:'25 aug 2022 -ES6',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-akad22ombfga-b15832f744a643d99d0c2f70d04367ba.mp4',
+},
+{title:'26 aug 2022 -JS Hoisting',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-vhz4401aivxz-a1730bc642754ca6a1b856cfa64a6bdf.mp4',
+},
+{title:'27 aug 2022 -JS Basic OOPS, 4 pillars',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-999sxgt72pzz-d30c0479ec8b4aa6a9bb65e4f18dddd9.mp4',
+},
+{title:'28 aug 2022 -JS Functions, Anonymous functions, named functions expression, JS higher order ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gv7xwwmak2ga-b23b6f6394004758a5b714f11a8ff3fe.mp4',
+},
+{title:'29 aug 2022 -Prototype inheritance',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ljiqiibf3fmm-adb8bd418b424edfa4aa8effd9426529.mp4',
+},
+{title:'30 aug 2022 -Callback function, JS Prototypes, Anonymous functions, named functions',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-lfno1ktxngx1-4d035e68932f428c8c7b0a733176ea49.mp4',
+},
+{title:'2 sept 2022 -JS Functions, JS higher order functions, closure, Js objects, JS currying, JSON',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-aqyr425edkyi-226b3bca152542af86607e64d9af9522.mp4',
+},
+{title:'3 sept 2022 -Promises, Async await try catch, Promise.all',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-flfdsob4hiix-fe9266f1097b4c249bfecdbcf95b1d4f.mp4',
+},
+{title:'4 sept 2022 -JavaScript Asynchronous Programming, Ajax intro, JS fetch, Axios',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-mylcu3fecvhi-a05aaae987cf455aaa894c5b73bd371e.mp4',
+},
+{title:'6 sept 2022 -JavaScript Asynchronous Programming, Ajax intro, JS fetch',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-zmtxcd8j5q73-bdca7d696b894c8191417021f5a2613a.mp4',
+},
+{title:'7 sept 2022 -JS Major Project (Note Keeping), Axios',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-quaniy2le7hm-6da4fef246c74b39a92e142b3cebe115.mp4',
+},
+{title:'8 sept 2022 -JS Major Project Sudoku',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-giwi8k0nvv2g-8464c9b631804a2db8f6313e6842f03c.mp4',
+},
+{title:'9 sept 2022 -JS Major Project Movie Booking',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ydddfpt6w0gw-44e89c439da047f99bede1a5acb71635.mp4',
+},
+{title:'11 sept 2022 -Assignment,revision',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-i93cmbv6h9oo-8f5b4dd6601d47d0a527b57921d06e99.mp4',
+},
+{title:'13 sept 2022 -NPM + NPM Scripts, Introduction to NPM, Setting up NPM & package.json, Installing',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-b8zhor6zx0j6-10d2fee88d804d1eb0b680833e4e50f0.mp4',
+},
+{title:'14 sept 2022 -React getting started, What is React JS?, Why React?, Create-react-app,',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-nei2udynk6qf-46845ceb260a4fb7b06c40756110ac95.mp4',
+},
+{title:'15 sept 2022 -React Basics, What Are Components?, Introducing JSX, Building a First Custom Function',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ss8lkxmod5nm-af581feaaecf4df293af5d238edd331b.mp4',
+},
+{title:'16 sept 2022 -Outputting Dynamic Data & Working with Expressions in JSX, Understand & work with',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-75q4ktchv79q-a99288952ea84ce4bcf4e56dc282c982.mp4',
+},
+{title:'17 sept 2022 -Going through the file structure & analyzing the project., Adding normal JS logi ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-852j2xzxxey4-ae11b6487d4d4e9a99bf9e6721c3cea0.mp4',
+},
+{title:'18 sept 2022 -Assignments',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kkn55iqvy78r-75af26ca056243bf94a613aa82c9ae14.mp4',
+},
+{title:'19 sept 2022 -JSX Limitations, Rendering Lists of Data, Using Stateful Lists, Understanding "K ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-z6b0x7lu40g5-7102e149a6d440459d9e5548e63fc872.mp4',
+},
+{title:'20 sept 2022 -Adding Form Inputs, Listening to User Input, Handling Form Submission, Working w ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5syyfe1qwbue-590e73f251404a2ea96fb2de072c0d6f.mp4',
+},
+{title:'21 sept 2022 -React Fragments, Introducing React Portals, Updating State That Depends On The ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fn0tgiir1uci-e0652ecae27b4d719c5775bfe515686f.mp4',
+},
+{title:'22 sept 2022 -React Basics, React State & Events, Working with Fragments, portals, refs, Child ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ztt2v6k3ccdz-79d3fef8b2a34ceb9760e43207773edb.mp4',
+},
+{title:'23 sept 2022 -Using the useEffect() Hook, Using useEffect() For handling Request',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gkr0g22skypw-70c12b7a4fa74e888761d08374323cde.mp4',
+},
+{title:'25 sept 2022 -react assignment',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-5n731ukpqqb6-732f04db565a40d7a9efa8234ea9f921.mp4',
+},
+{title:'26 sept 2022 -React Handling Side Effects, Class-based vs Functional Components, First Class-b ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-syjb7crwfy1z-07202d90028246eda04a21cddbfccb57.mp4',
+},
+{title:'27 sept 2022 -Class based Component Lifecycle, Sending a GET Request using fetch (class based ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-4qmltfyji5xx-32d48c31b7de4bd99c28c8729f630a92.mp4',
+},
+{title:'28 sept 2022 -Lifecycle Methods In Action, Class-based Components & Context, Error Boundaries',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-g1nry1oajv8l-ace8cac6f75a442bac1f8d78bfcf591f.mp4',
+},
+{title:'29 sept 2022 -Class based components, UseReducer Hook, What are "Side Effects" & Introducing u ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-7fkoyfi9ej5q-c3a64c08a007479d90c0d6ed4099206d.mp4',
+},
+{title:'30 sept 2022 -Working with Forms & User inputs, Providing Validation Feedback',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-lifq5zas3ofc-67b181afe2924fe8b1d60ae9c131dd55.mp4',
+},
+{title:'1 oct 2022 -ReactJS, Working with APIs(React), Handling loading of data building a loader, C ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-l308m2bt992i-27a3d961cd4f44278897782846664f4b.mp4',
+},
+{title:'2 oct 2022 -React assignment',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9az1jykeom7i-f797b929f5d04d328af84c154a851053.mp4',
+},
+{title:'3 oct 2022 -A Closer Look At Child Component Re-Evaluation, Preventing Unnecessary Re-Evalua ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-gf40obfpz1h9-71542f2e032c43e396cd7eb49ed8adf1.mp4',
+},
+{title:'4 oct 2022 -Context API, Intro React Context API, Using the React Context API, Tapping Into',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-pvi0atfmvg15-15ee0192f8994edf9e49b74e2448f8f6.mp4',
+},
+{title:'6 oct 2022 -What is Routing & Why?, Installing React Router, Defining & Using Routes (React) ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-s5gqoo3r5ggy-17f31a7aa6774d4a8c034b06fe75c2cf.mp4',
+},
+{title:'7 oct 2022 -React Router, Working with APIs(React), Building theme toggler, Adding Dynamic R',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-9w86u7zngkub-9383de173ebf41dd9f7df7e7dcd53df4.mp4',
+},
+{title:'10 oct 2022 -React Optimization, Handling loading of data building a loader, State Scheduling ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-wbj2txatrhqe-95266d0bf1e643acbaddc43b32dfbd74.mp4',
+},
+{title:'11 oct 2022 -ReactJS, React Authentication, Add signin, signup, logout functionality(React)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-1dsyfrdyk8kj-b07b64b6239848e69ce3d17ff4444d4c.mp4',
+},
+{title:'12 oct 2022 -Redux Intro, Redux vs React Context, How Redux Works + State Management, Install ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ced4utl7p6dq-c80befcb880e4876ae873e45b41c9ce0.mp4',
+},
+{title:'14 oct 2022 -Redux, Redux Actions & reducers, Redux Store & Provider, Redux connect(), Redux ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-xnghg8v4eb4b-c801eec594474c6b85795c6f373eedc4.mp4',
+},
+{title:'15 oct 2022 -Assignment react',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-r23m0df1vyg5-009c8743233849079f55e024c665294e.mp4',
+},
+{title:'16 oct 2022 - Assignment react',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-akivd3bap3k9-2aff0d3d99914c108271ba1771c6170b.mp4',
+},
+{title:'17 oct 2022 -React Deployment Steps, Building The Code For Production',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0q96ts7xt0ba-f49d1782d5ea4c308af1d1dbe53e8bd4.mp4',
+},
+{title:'18 oct 2022 - React assignment,revision',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-n1qfzmxrf7d4-0d496242334f435c923e21b9cf951881.mp4',
+},
+{title:'20 oct 2022 - React prob session',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-2zjat7l2gyep-12cd7c6bcdd7456da8b27cff7b5644e9.mp4',
+},
+{title:'21 oct 2022 -react assignment',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fvq3pul20488-9a1ed08d60cd4293a05926499bf21a5f.mp4',
+},
+{title:'22 oct 2022 -React prob session',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-x69h2eiyuzkt-4aab5627b118460c8f9dc63502e15888.mp4',
+},
+{title:'26 oct 2022 - react revision',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0nkubcbhl63d-9e0cb7203bf348dfb34e2be6fa2ceacb.mp4',
+},
+
+
+{title:'27 oct 2022 -Single thread vs multi thread, Export import require(node)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-fpil0in922gd-ad49c39c14cd45229269ae7bdffdb048.mp4',
+},
+{title:'28 oct 2022 -Global object(node), Path,os module, EventEmitter, File System CRUD',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0nfzx37kr03l-8e364d40bc364256a6c26fa36eda76ba.mp4',
+},
+{title:'31 oct 2022 -Core Node, Core Node Intro, Node Modules system and builtin modules, Libuv / asy ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-yp91sjfq64id-e74c9047958e41368939095588c819be.mp4',
+},
+{title:'2 nov 2022 -Why needed , examples and why express, Express - REST/API, Express - Simple Serv ...',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-3uy8ujh1htju-a3bbc55101a84431b46f2d0cb3cefd3a.mp4',
+},
+{title:'4 nov 2022 -Res.json, Res.status, Express.json, Req.body',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-x9741ukbw9w1-ac1db3487daa48fd95623e0b78301b9b.mp4',
+},
+{title:'5 nov 2022- App.use and middleware ecosystem, Req.params',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-08oveyhd3vx8-80884d043c234538b5af9a215ec10b16.mp4',
+},
+{title:'6 nov 2022 -Res.Set',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-duq1lbwv216x-3df13003a92c4857bcbce2d83a935573.mp4',
+},
+{title:'8 nov 2022 -Res.send/res.sendFile, Express.static',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-tt04uklh1jyq-5907858a706e4ccb817a8d2a4d5725a7.mp4',
+},
+{title:'10 nov 2022 -  Request parameters, Express.urlencoded, Res.render/ejs/templating/ssr',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-pcgul4j3y7ny-1ffe6804420744fd9e194f5c7f2e2460.mp4',
+},
+{title:'11 nov 2022 -SSR/Templating, 3rd party middlewares',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ugwkr96e50g8-90493138910c4e24a18306993b708c38.mp4',
+},
+{title:'13 nov 2022 -Basic Response object methods, Middlewares in Express, Cookies/req.cookies/res.c ',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-dd7f9j4j4heh-1e11be27778f434db376a2a17d10e11b.mp4',
+},
+{title:'15 nov 2022 -Backend, NodeJS, Node JS Frameworks, Express JS, HTTP status codes and headers',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-t800xo9u84s3-f567398768ce4493b6b7e265d5d01fbe.mp4',
+},
+{title:'16 Nov 2022- Mongo shell, Connect to DB/listing collections, Documents and Collections, CRUD',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-nui7orsryjmn-7bb8b5a091944be1b1d20a545f14405a.mp4',
+},
+{title:'17 nov 2022- Mongoose and ORM, TypeORM, Schema (Mongoose), Model (Mongoose)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-thz88lvn3qyz-926d4f57315e4f4d8b072b81ba86875f.mp4',
+},
+{title:'18 nov 2022 -HTTP status codes and headers, Folder structure (Express), Mongoose',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-lwrnb3cflazo-bb94c2aca4d443e9bf4ccc415d7df900.mp4',
+},
+{title:'22 nov 2022 -Structuring Node apps, DB and ORM (Express)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-0kzkv0bvufc7-ef8024d1643c4e459a99bdfb9842f574.mp4',
+},
+{title:'23 nov 2022 -Async/Await/Promise/Callbacks (Express)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kqhabc4m7a6q-1f03594a0281495eb893d4c9878cdfce.mp4',
+ },
+{title:'24 nov 2022 -Express JS, Express Router',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-m89gj4gpovxq-e13d3bc8ba184015b3b29a8f55046a44.mp4',
+},
+{title:'27 nov 2022 -Match (Mongo), Project (Mongo), Group (Mongo)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-ad6mh4tdk9ax-1589e8f7ccbb41c6ab18fc15abccc0d4.mp4',
+},
+{title:'29 nov 2022 -Other-strategies (Express Auth), Hashing/Salting,Bcyrpt',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-t49fwjmjka43-0348e73fc54d4e55b7612311e1673ee7.mp4',
+},
+{title:'30 nov 2022 -NoSQL, NoSQL Fundamentals, Basic aggregations (Mongo)',
+src:'https://d3dyfaf3iutrxo.cloudfront.net/video/course/video_session/lecture-kic0qxkkr8jf-c5d1cbd10744438baaea8ff6881c9b25.mp4',
+},
+{tilte:'2 nov 2022 -{title:Backend, NodeJS, Node JS Frameworks, Auth, Passport/passport-jwt',
+src:'https://d3dysrc:faf3iutrxo.cloudfront.net/video/course/video_session/lecture-fx94tw8y61zu-118ed501e5a84c97807460668746f01e.mp4'}]
         function callme(){
         
         console.log(document.getElementById('range').value)
@@ -91,18 +520,28 @@
         }
         function selector(){
             var x = document.getElementById('selector').value
+            
             console.log(obj.length);
             if(x>obj.length)
             {
                 document.getElementById('selector').value='';
             }
-            video.src=obj[x]
+            video.src=obj[x].src
+            
+            console.log(video.currentTime)
+            document.getElementById('No').innerText=`Currently:${parseInt(x)} Remaining:${obj.length-x} Title:${obj[x].title} Total:${obj.length}`
+            console.log(obj[x].src)
+
         }
     </script>
     
 </body>
 </html>
 
+
+
+						
+						
 
 
 						
